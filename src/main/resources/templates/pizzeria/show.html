@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments :: head}"></div>
+    <title th:text="${pizza.name}"></title>
+</head>
+<body>
+    <div th:replace="~{navbar :: navbar}"></div>
+    <div class="container">
+    <div class="row py-4">
+            <div class="col-12">
+                <h1 class="text-center" th:text="${pizza.name}"></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <figure>
+                    <img th:src="${pizza.image}" alt="${pizza.name}" class="figure-img img-fluid rounded">
+                    <figcaption class="figure-caption text-end" th:text="${pizza.name}"></figcaption>
+                </figure>
+            </div>
+            <div class="col-6">
+                <dl>
+                    <dt>Descrizione</dt>
+                    <dd th:text="${pizza.description}"></dd>
+                    <dt>Prezzo</dt> 
+                    <dd th:text="${pizza.formattedPrice}"></dd>
+                    <dt>Ingredienti</dt>
+                    <ul>
+                        <li th:each="ing : ${pizza.ingredients}" th:text="${ing.ingredient}"></li>
+                    </ul>
+                </dl>
+            </div>
+            <hr>
+            <div th:if="${!pizza.deals.isEmpty()}" class="col-12">
+                <h3>Offerte</h3>
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Data inizio</th>
+                        <th scope="col">Data fine</th>
+                        <th scope="col">Prezzo</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="deal : ${pizza.deals}">
+                            <td th:text="${deal.name}"></td>
+                            <td th:text="${deal.startDate}"></td>
+                            <td th:text="${deal.endDate}"></td>
+                            <td th:text="${deal.formattedPrice}"></td>
+                            <td>
+                                <a class="btn btn-primary" th:href="@{|/deals/edit/${deal.id}|}" sec:authorize="hasAuthority('ADMIN')"><i class="fa-solid fa-edit"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                  </table>
+            </div>
+            <div th:if="${pizza.deals.isEmpty()}" class="col-12">
+                <h3>Non ci sono offerte per questa pizza</h3>
+            </div>
+            <hr>
+            <div class="col-12">
+                <a class="btn btn-success" th:href="@{|/pizzeria/edit/${pizza.id}|}" sec:authorize="hasAuthority('ADMIN')"><i class="fa-solid fa-pen-to-square"></i> MODIFICA PIZZA</a>
+                <a class="btn btn-warning" th:href="@{/pizzeria/{id}/deals (id=${pizza.id})}" sec:authorize="hasAuthority('ADMIN')"><i class="fa-solid fa-plus"></i> AGGIUNGI OFFERTA</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments :: scripts}"></div>
+</body>
+</html>
