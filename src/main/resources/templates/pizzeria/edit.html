@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <h4>Categorie</h4>
+                        <h4>Ingredienti</h4>
                         <div class="form-check" th:each="ing : ${allIngredients}">
                             <input type="checkbox"  class="form-check-input" th:id="|ingredient_${ing.id}|"
                             th:value="${ing.id}" th:field="*{ingredients}" th:errorClass="is-invalid"></input>
