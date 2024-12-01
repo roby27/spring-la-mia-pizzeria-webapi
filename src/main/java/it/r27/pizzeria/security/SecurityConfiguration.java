@@ -18,12 +18,12 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests()
             .requestMatchers("/pizzeria/create", "/pizzeria/edit/**").hasAuthority("ADMIN")
             .requestMatchers(HttpMethod.POST, "/pizzeria/**").hasAuthority("ADMIN")
-            .requestMatchers("/deals", "/deals/**").hasAuthority("ADMIN")
             .requestMatchers("/pizzeria", "/pizzeria/**").hasAnyAuthority("USER", "ADMIN")
             .requestMatchers("/**").permitAll()
             .and().formLogin()
             .and().logout()
-            .and().exceptionHandling();
+            .and().exceptionHandling()
+            .and().csrf().disable();
 
         return http.build();
     }
